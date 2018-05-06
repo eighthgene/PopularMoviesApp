@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Popular Movies App</string>
+    <string name="rv_poster_description">Movie poster image</string>
+
 </resources>
