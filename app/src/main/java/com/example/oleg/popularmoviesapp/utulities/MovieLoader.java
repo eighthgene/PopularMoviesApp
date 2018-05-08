@@ -26,7 +26,6 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return movieList;
     }
 }

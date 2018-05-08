@@ -1,5 +1,6 @@
 package com.example.oleg.popularmoviesapp.adapters;
 
+import android.support.v4.app.LoaderManager;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.oleg.popularmoviesapp.R;
+import com.example.oleg.popularmoviesapp.activity.MainActivity;
 import com.example.oleg.popularmoviesapp.model.Movie;
 import com.example.oleg.popularmoviesapp.utulities.Constants;
 import com.example.oleg.popularmoviesapp.utulities.MovieNetworkUtils;
@@ -19,7 +21,13 @@ import java.util.List;
 
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
-    public List<Movie> movieList = new ArrayList<>();
+    private List<Movie> movieList = new ArrayList<>();
+    private boolean mIsLoading;
+    private LoaderManager mLoaderManager;
+
+    public MovieAdapter(LoaderManager loaderManager) {
+        this.mLoaderManager = loaderManager;
+    }
 
     @NonNull
     @Override
@@ -47,11 +55,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     public void setMovieList(ArrayList<Movie> list) {
         movieList.addAll(list);
+        mIsLoading = false;
         notifyDataSetChanged();
     }
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder {
-        public final ImageView mPosterImageView;
+        private final ImageView mPosterImageView;
 
         public MovieAdapterViewHolder(View itemView) {
             super(itemView);
@@ -63,6 +72,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     public void onViewAttachedToWindow(@NonNull MovieAdapterViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         int layoutPosition = holder.getLayoutPosition();
+        if (!mIsLoading && (layoutPosition > movieList.size() - 5)) {
+            mIsLoading = true;
+            MovieNetworkUtils.page++;
+            mLoaderManager.getLoader(MainActivity.MOVIE_LOADER_ID).forceLoad();
+        }
 
     }
 }

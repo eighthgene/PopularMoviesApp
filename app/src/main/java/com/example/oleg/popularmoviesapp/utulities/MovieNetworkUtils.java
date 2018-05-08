@@ -18,7 +18,7 @@ public final class MovieNetworkUtils {
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
 
     private static final String apiKey = ApiKeyUtils.API_KEY;
-    private static int page = 1;
+    public static int page = 1;
 
     private static final String API_KEY_PARAM = "api_key";
     private static final String LANGUAGE_PARAM = "language";

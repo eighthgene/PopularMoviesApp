@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private RecyclerView mRecycleView;
     private MovieAdapter mMovieAdapter;
 
-    private static final int MOVIE_LOADER_ID = 0;
+    public static final int MOVIE_LOADER_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mRecycleView.setLayoutManager(layoutManager);
         mRecycleView.setHasFixedSize(true);
 
-        mMovieAdapter = new MovieAdapter();
+        mMovieAdapter = new MovieAdapter(loaderManager);
         mRecycleView.setAdapter(mMovieAdapter);
 
     }
