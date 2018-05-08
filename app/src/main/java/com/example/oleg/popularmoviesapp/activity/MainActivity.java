@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private List<Movie> movieList = new ArrayList<>();
-
     private RecyclerView mRecycleView;
     private MovieAdapter mMovieAdapter;
     private ProgressBar mProgressBar;

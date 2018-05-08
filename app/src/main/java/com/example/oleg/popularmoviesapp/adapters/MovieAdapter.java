@@ -86,6 +86,5 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
             MovieNetworkUtils.page++;
             mLoaderManager.getLoader(MainActivity.MOVIE_LOADER_ID).forceLoad();
         }
-
     }
 }
