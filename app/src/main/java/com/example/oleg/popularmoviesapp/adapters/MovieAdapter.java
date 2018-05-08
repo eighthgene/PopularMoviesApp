@@ -8,22 +8,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
+import com.bumptech.glide.Glide;
 import com.example.oleg.popularmoviesapp.R;
 import com.example.oleg.popularmoviesapp.activity.MainActivity;
 import com.example.oleg.popularmoviesapp.model.Movie;
 import com.example.oleg.popularmoviesapp.utulities.Constants;
 import com.example.oleg.popularmoviesapp.utulities.MovieNetworkUtils;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
     private List<Movie> movieList = new ArrayList<>();
     private boolean mIsLoading;
     private LoaderManager mLoaderManager;
+    private Context context;
 
     public MovieAdapter(LoaderManager loaderManager) {
         this.mLoaderManager = loaderManager;
@@ -32,8 +36,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     @NonNull
     @Override
     public MovieAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        int layoutIdForListItem = R.layout.movie_list_item;
+        context = parent.getContext();
+        int layoutIdForListItem = R.layout.movie_item;
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View view = inflater.inflate(layoutIdForListItem, parent, false);
@@ -43,9 +47,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     @Override
     public void onBindViewHolder(@NonNull MovieAdapterViewHolder holder, int position) {
         Movie movie = movieList.get(position);
-        Picasso.with(holder.mPosterImageView.getContext())
-                .load(MovieNetworkUtils.buildImageUrl(Constants.KEY_IMAGE_SIZE_W342, movie.getPosterPath()).toString())
+        Glide.with(context)
+                .load(MovieNetworkUtils.buildImageUrl(Constants.KEY_IMAGE_SIZE_W185, movie.getPosterPath()).toString())
+                .transition(withCrossFade())
                 .into(holder.mPosterImageView);
+        holder.mProgressBar.setVisibility(View.INVISIBLE);
+
     }
 
     @Override
@@ -61,10 +68,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder {
         private final ImageView mPosterImageView;
+        private final ProgressBar mProgressBar;
 
         public MovieAdapterViewHolder(View itemView) {
             super(itemView);
             mPosterImageView = itemView.findViewById(R.id.iv_poster);
+            mProgressBar = itemView.findViewById(R.id.pb_movie_item);
         }
     }
 

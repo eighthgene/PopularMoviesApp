@@ -1,15 +1,14 @@
 package com.example.oleg.popularmoviesapp.activity;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
-
+import android.widget.ProgressBar;
 
 import com.example.oleg.popularmoviesapp.R;
 import com.example.oleg.popularmoviesapp.adapters.MovieAdapter;
@@ -26,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private RecyclerView mRecycleView;
     private MovieAdapter mMovieAdapter;
+    private ProgressBar mProgressBar;
 
     public static final int MOVIE_LOADER_ID = 0;
 
@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mProgressBar = findViewById(R.id.pb_list_loading_movie);
 
         //Loader
         int loaderId = MOVIE_LOADER_ID;
