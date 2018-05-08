@@ -14,6 +14,7 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
     public MovieLoader(Context context) {
         super(context);
     }
+    int a = 21;
 
     @Override
     public List<Movie> loadInBackground() {
@@ -28,4 +29,5 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
         }
         return movieList;
     }
+
 }
