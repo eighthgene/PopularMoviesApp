@@ -31,6 +31,8 @@ public class Movie implements Parcelable {
         this.releaseDate = releaseDate;
     }
 
+
+
     protected Movie(Parcel in) {
         id = in.readInt();
         originalTitle = in.readString();
@@ -94,5 +96,29 @@ public class Movie implements Parcelable {
 
     public String getPosterPath() {
         return posterPath;
+    }
+
+    public String getOriginalTitle() {
+        return originalTitle;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Double getPopularity() {
+        return popularity;
+    }
+
+    public Double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
+    }
+
+    public String getOverview() {
+        return overview;
     }
 }

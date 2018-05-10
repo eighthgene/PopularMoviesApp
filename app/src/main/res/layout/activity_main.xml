@@ -11,14 +11,7 @@
         android:id="@+id/rv_movies"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <ProgressBar
-            android:id="@+id/pb_list_loading_movie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
     </android.support.v7.widget.RecyclerView>
-
 
     
 

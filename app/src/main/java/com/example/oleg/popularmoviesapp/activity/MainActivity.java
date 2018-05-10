@@ -1,5 +1,6 @@
 package com.example.oleg.popularmoviesapp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,7 +9,10 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
 
 import com.example.oleg.popularmoviesapp.R;
 import com.example.oleg.popularmoviesapp.adapters.MovieAdapter;
@@ -18,7 +22,8 @@ import com.example.oleg.popularmoviesapp.utulities.MovieLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks,
+        MovieAdapter.ListMovieClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private List<Movie> movieList = new ArrayList<>();
@@ -32,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mProgressBar = findViewById(R.id.pb_list_loading_movie);
 
         //Loader
         int loaderId = MOVIE_LOADER_ID;
@@ -48,15 +52,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             loaderManager.restartLoader(loaderId, bundleForLoader, callbacks).forceLoad();
         }
 
-
         mRecycleView = findViewById(R.id.rv_movies);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         mRecycleView.setLayoutManager(layoutManager);
         mRecycleView.setHasFixedSize(true);
 
-        mMovieAdapter = new MovieAdapter(loaderManager);
+        mMovieAdapter = new MovieAdapter(loaderManager, this);
         mRecycleView.setAdapter(mMovieAdapter);
-
     }
 
     @NonNull
@@ -65,13 +67,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return new MovieLoader(this);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onLoadFinished(@NonNull Loader loader, Object data) {
+        movieList.addAll((ArrayList<Movie>) data);
         mMovieAdapter.setMovieList((ArrayList<Movie>) data);
     }
+
 
     @Override
     public void onLoaderReset(@NonNull Loader loader) {
 
+    }
+
+    @Override
+    public void onClickMovieListener(int clickedMovieIndex) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_MOVIE, movieList.get(clickedMovieIndex));
+        startActivity(intent);
     }
 }

@@ -1,11 +1,12 @@
 package com.example.oleg.popularmoviesapp.adapters;
 
-import android.support.v4.app.LoaderManager;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.LoaderManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -24,13 +25,21 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
+
+    public interface ListMovieClickListener {
+        void onClickMovieListener(int clickedMovieIndex);
+    }
+
     private List<Movie> movieList = new ArrayList<>();
     private boolean mIsLoading;
     private LoaderManager mLoaderManager;
     private Context context;
+    final private ListMovieClickListener mClickLister;
 
-    public MovieAdapter(LoaderManager loaderManager) {
+
+    public MovieAdapter(LoaderManager loaderManager, ListMovieClickListener movieClickListener) {
         this.mLoaderManager = loaderManager;
+        this.mClickLister = movieClickListener;
     }
 
     @NonNull
@@ -66,14 +75,21 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         notifyDataSetChanged();
     }
 
-    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder {
+    class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
         private final ImageView mPosterImageView;
         private final ProgressBar mProgressBar;
 
-        public MovieAdapterViewHolder(View itemView) {
+        MovieAdapterViewHolder(View itemView) {
             super(itemView);
             mPosterImageView = itemView.findViewById(R.id.iv_poster);
             mProgressBar = itemView.findViewById(R.id.pb_movie_item);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int clickedPosition = getAdapterPosition();
+            mClickLister.onClickMovieListener(clickedPosition);
         }
     }
 
