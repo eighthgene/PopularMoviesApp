@@ -6,6 +6,7 @@ public final class Constants {
     public static final String KEY_RESULTS = "results";
     public static final String KEY_MOVIE_ID = "id";
     public static final String KEY_MOVIE_VOTE_AVERAGE = "vote_average";
+    public static final String KEY_MOVIE_VOTE_COUNT = "vote_count";
     public static final String KEY_MOVIE_TITLE = "title";
     public static final String KEY_MOVIE_POPULARITY = "popularity";
     public static final String KEY_MOVIE_POSTER_PATH = "poster_path";

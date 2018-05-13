@@ -8,8 +8,9 @@ public class Movie implements Parcelable {
     private String originalTitle;
     private String title;
 
-    private Double popularity;
-    private Double voteAverage;
+    private float popularity;
+    private float voteAverage;
+    private int voteCount;
 
     private String posterPath;
     private String backdropPath;
@@ -17,14 +18,15 @@ public class Movie implements Parcelable {
     private String overview;
     private String releaseDate;
 
-    public Movie(int id, String originalTitle, String title, Double popularity,
-                 Double voteAverage, String posterPath, String backdropPath,
+    public Movie(int id, String originalTitle, String title, float popularity,
+                 float voteAverage, int voteCount, String posterPath, String backdropPath,
                  String overview, String releaseDate) {
         this.id = id;
         this.originalTitle = originalTitle;
         this.title = title;
         this.popularity = popularity;
         this.voteAverage = voteAverage;
+        this.voteCount = voteCount;
         this.posterPath = posterPath;
         this.backdropPath = backdropPath;
         this.overview = overview;
@@ -32,21 +34,13 @@ public class Movie implements Parcelable {
     }
 
 
-
-    protected Movie(Parcel in) {
+    public Movie(Parcel in) {
         id = in.readInt();
         originalTitle = in.readString();
         title = in.readString();
-        if (in.readByte() == 0) {
-            popularity = null;
-        } else {
-            popularity = in.readDouble();
-        }
-        if (in.readByte() == 0) {
-            voteAverage = null;
-        } else {
-            voteAverage = in.readDouble();
-        }
+        popularity = in.readFloat();
+        voteAverage = in.readFloat();
+        voteCount = in.readInt();
         posterPath = in.readString();
         backdropPath = in.readString();
         overview = in.readString();
@@ -58,18 +52,9 @@ public class Movie implements Parcelable {
         dest.writeInt(id);
         dest.writeString(originalTitle);
         dest.writeString(title);
-        if (popularity == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeDouble(popularity);
-        }
-        if (voteAverage == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeDouble(voteAverage);
-        }
+        dest.writeFloat(popularity);
+        dest.writeFloat(voteAverage);
+        dest.writeInt(voteCount);
         dest.writeString(posterPath);
         dest.writeString(backdropPath);
         dest.writeString(overview);
@@ -106,11 +91,11 @@ public class Movie implements Parcelable {
         return title;
     }
 
-    public Double getPopularity() {
+    public float getPopularity() {
         return popularity;
     }
 
-    public Double getVoteAverage() {
+    public float getVoteAverage() {
         return voteAverage;
     }
 
@@ -120,5 +105,13 @@ public class Movie implements Parcelable {
 
     public String getOverview() {
         return overview;
+    }
+
+    public int getVoteCount() {
+        return voteCount;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
     }
 }

@@ -3,6 +3,7 @@ package com.example.oleg.popularmoviesapp.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +76,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         notifyDataSetChanged();
     }
 
+    public void clearMovieList() {
+        movieList.clear();
+        mIsLoading = false;
+        notifyDataSetChanged();
+    }
+
     class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
         private final ImageView mPosterImageView;
         private final ProgressBar mProgressBar;
@@ -103,4 +110,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
             mLoaderManager.getLoader(MainActivity.MOVIE_LOADER_ID).forceLoad();
         }
     }
+
+
 }
