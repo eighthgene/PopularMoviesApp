@@ -97,8 +97,6 @@ public class DetailActivity extends AppCompatActivity {
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
-
     }
 
     private float convertToStarRating(float num) {
