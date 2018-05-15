@@ -4,7 +4,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/sortPopularMenuItem"
-            android:title="Sort by most popular"
+            android:title="@string/menu_item_sort_by_most_popular"
             android:orderInCategory="1"
             app:showAsAction="never"
             >
@@ -13,7 +13,7 @@
 
         <item
             android:id="@+id/sortHighestMenuItem"
-            android:title="Sort by highest-rated"
+            android:title="@string/menu_item_sort_by_highest_rated"
             android:orderInCategory="2"
             app:showAsAction="never">
 

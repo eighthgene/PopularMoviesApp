@@ -1,7 +1,6 @@
 package com.example.oleg.popularmoviesapp.utulities;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.example.oleg.popularmoviesapp.activity.MainActivity;

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="rv_poster_height">270dp</dimen>
-    <dimen name="rv_poster_width">180dp</dimen>
     <dimen name="default_movie_rating">30sp</dimen>
     <dimen name="range_movie_rating">24sp</dimen>
     <dimen name="label_movie_rating">24sp</dimen>

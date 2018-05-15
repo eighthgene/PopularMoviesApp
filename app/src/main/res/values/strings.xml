@@ -18,4 +18,7 @@
     <string name="default_movie_overview">Overview of movie</string>
     <string name="msg_no_connection">No connection to Internet \nSwipe down to refresh</string>
     <string name="detail_votes_label">votes</string>
+    <string name="movie_poster">Movie poster</string>
+    <string name="menu_item_sort_by_most_popular">Sort by most popular</string>
+    <string name="menu_item_sort_by_highest_rated">Sort by highest-rated</string>
 </resources>

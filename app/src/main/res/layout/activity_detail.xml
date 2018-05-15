@@ -76,7 +76,9 @@
                         android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/poster_sample" />
+                        app:srcCompat="@drawable/poster_sample"
+                        android:contentDescription="@string/movie_poster"
+                        />
 
                     <RatingBar
                         android:id="@+id/rb_movie_rating"

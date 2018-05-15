@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-    public boolean isOnline() {
+    private boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
