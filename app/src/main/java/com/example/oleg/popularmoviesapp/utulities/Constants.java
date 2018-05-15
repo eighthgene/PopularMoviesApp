@@ -15,6 +15,9 @@ public final class Constants {
     public static final String KEY_MOVIE_OVERVIEW = "overview";
     public static final String KEY_MOVIE_RELEASE_DATE = "release_date";
 
+    //SharedPreferences
+    public static final String KEY_MOVIE_SORT_ORDER = "sortOrderMovie";
+
     //Image size
     public static final String KEY_IMAGE_SIZE_W185 = "w185";
     public static final String KEY_IMAGE_SIZE_W200 = "w200";

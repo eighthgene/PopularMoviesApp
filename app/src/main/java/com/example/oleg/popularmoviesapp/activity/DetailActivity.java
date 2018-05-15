@@ -83,18 +83,18 @@ public class DetailActivity extends AppCompatActivity {
 
         mCollapsingToolbarLayout.setTitle(movie.getTitle());
 
-        String originalTitle = "\"" + movie.getOriginalTitle() +"\"";
+        String originalTitle = "\"" + movie.getOriginalTitle() + "\"";
         mOriginalTitle.setText(originalTitle);
 
         mMovieRating.setText(String.valueOf(movie.getVoteAverage()));
         mRatingBar.setRating(convertToStarRating(movie.getVoteAverage()));
-        mVoteCounting.setText(String.valueOf(movie.getVoteCount() + " votes"));
+        mVoteCounting.setText(String.valueOf(movie.getVoteCount() + " " + getString(R.string.detail_votes_label)));
         mDateRelease.setText(movie.getReleaseDate());
 
         mOverview.setText(movie.getOverview());
 
         setSupportActionBar(mToolBar);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }

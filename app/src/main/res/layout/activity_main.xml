@@ -31,16 +31,24 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:lines="2"
-        android:textSize="16dp"
-        android:text="No connection to Internet... \n Swipe top to refresh"
+        android:textSize="@dimen/msg_no_connection"
+        android:text="@string/msg_no_connection"
         android:textAlignment="center"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/sr_movies"
-        app:layout_constraintEnd_toEndOf="@+id/sr_movies"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/sr_movies"
-        app:layout_constraintTop_toTopOf="@+id/sr_movies" />
+        app:layout_constraintTop_toTopOf="parent"  />
+
+    <ProgressBar
+        android:id="@+id/pb_empty_list_movies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

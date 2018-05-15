@@ -3,4 +3,19 @@
     <string name="rv_poster_description">Movie poster image</string>
     <string name="movie_title">Movie title</string>
 
+    <string name="app_title_popular">Most popular movies</string>
+    <string name="app_title_top_rated">Top rated movies</string>
+
+    <string name="toast_no_internet_connection">No internet connection</string>
+    <string name="refreshed">Refreshed</string>
+    <string name="default_movie_rating">7.0</string>
+    <string name="range_movie_rating">/10</string>
+    <string name="label_movie_rating">Rating:</string>
+    <string name="default_movie_votes">5556 votes</string>
+    <string name="label_movie_date_release">Date release:</string>
+    <string name="movie_date_release">2017–01–06</string>
+    <string name="label_movie_overview">Overview</string>
+    <string name="default_movie_overview">Overview of movie</string>
+    <string name="msg_no_connection">No connection to Internet \nSwipe down to refresh</string>
+    <string name="detail_votes_label">votes</string>
 </resources>

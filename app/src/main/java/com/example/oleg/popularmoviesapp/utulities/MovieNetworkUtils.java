@@ -38,7 +38,7 @@ public final class MovieNetworkUtils {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        Log.v(TAG, "Built movie URL " + url);
+        Log.d(TAG, "Built movie URL " + url);
         return url;
     }
 
@@ -53,7 +53,7 @@ public final class MovieNetworkUtils {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        Log.v(TAG, "Built image URL " + url);
+        Log.d(TAG, "Built image URL " + url);
         return url;
     }
 
