@@ -1,4 +1,4 @@
-package com.example.oleg.popularmoviesapp.utulities;
+package com.example.oleg.popularmoviesapp.utilities;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;

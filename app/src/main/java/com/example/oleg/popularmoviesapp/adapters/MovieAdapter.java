@@ -3,7 +3,6 @@ package com.example.oleg.popularmoviesapp.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +15,8 @@ import com.bumptech.glide.Glide;
 import com.example.oleg.popularmoviesapp.R;
 import com.example.oleg.popularmoviesapp.activity.MainActivity;
 import com.example.oleg.popularmoviesapp.model.Movie;
-import com.example.oleg.popularmoviesapp.utulities.Constants;
-import com.example.oleg.popularmoviesapp.utulities.MovieNetworkUtils;
+import com.example.oleg.popularmoviesapp.utilities.Constants;
+import com.example.oleg.popularmoviesapp.utilities.MovieNetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;

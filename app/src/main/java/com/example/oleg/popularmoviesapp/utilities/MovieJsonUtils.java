@@ -1,4 +1,4 @@
-package com.example.oleg.popularmoviesapp.utulities;
+package com.example.oleg.popularmoviesapp.utilities;
 
 import android.util.Log;
 

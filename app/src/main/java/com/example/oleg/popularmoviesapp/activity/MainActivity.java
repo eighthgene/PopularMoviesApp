@@ -25,9 +25,9 @@ import android.widget.Toast;
 import com.example.oleg.popularmoviesapp.R;
 import com.example.oleg.popularmoviesapp.adapters.MovieAdapter;
 import com.example.oleg.popularmoviesapp.model.Movie;
-import com.example.oleg.popularmoviesapp.utulities.Constants;
-import com.example.oleg.popularmoviesapp.utulities.MovieLoader;
-import com.example.oleg.popularmoviesapp.utulities.MovieNetworkUtils;
+import com.example.oleg.popularmoviesapp.utilities.Constants;
+import com.example.oleg.popularmoviesapp.utilities.MovieLoader;
+import com.example.oleg.popularmoviesapp.utilities.MovieNetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
