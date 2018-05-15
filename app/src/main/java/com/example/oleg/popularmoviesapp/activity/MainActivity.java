@@ -219,5 +219,4 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             setTitle(R.string.app_title_top_rated);
         }
     }
-
 }
