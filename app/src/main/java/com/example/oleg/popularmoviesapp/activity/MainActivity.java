@@ -26,8 +26,8 @@ import com.example.oleg.popularmoviesapp.R;
 import com.example.oleg.popularmoviesapp.adapters.MovieAdapter;
 import com.example.oleg.popularmoviesapp.model.Movie;
 import com.example.oleg.popularmoviesapp.utilities.Constants;
-import com.example.oleg.popularmoviesapp.utilities.MovieLoader;
-import com.example.oleg.popularmoviesapp.utilities.MovieNetworkUtils;
+import com.example.oleg.popularmoviesapp.Loaders.MovieLoader;
+import com.example.oleg.popularmoviesapp.utilities.NetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +74,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return new MovieLoader(this);
     }
 
-    @SuppressWarnings("unchecked")
+    //TODO
+
     @Override
     public void onLoadFinished(@NonNull Loader loader, Object data) {
         movieList.addAll((ArrayList<Movie>) data);
@@ -172,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mProgressBar.setVisibility(View.VISIBLE);
             saveSortOrder(sortOrder);
             currentSortOrder = sortOrder;
-            MovieNetworkUtils.page = 1;
+            NetworkUtils.page = 1;
             setAppTitle();
             startLoadMovies();
         }

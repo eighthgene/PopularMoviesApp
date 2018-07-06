@@ -21,4 +21,8 @@
     <string name="movie_poster">Movie poster</string>
     <string name="menu_item_sort_by_most_popular">Sort by most popular</string>
     <string name="menu_item_sort_by_highest_rated">Sort by highest-rated</string>
+
+
+    <!-- Content provider -->
+    <string name="content_authority">com.example.oleg.popularmoviesapp</string>
 </resources>

@@ -1,10 +1,11 @@
-package com.example.oleg.popularmoviesapp.utilities;
+package com.example.oleg.popularmoviesapp.Loaders;
 
-import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
-
+import android.content.Context;
 import com.example.oleg.popularmoviesapp.activity.MainActivity;
+import com.example.oleg.popularmoviesapp.json.MovieJsonUtils;
 import com.example.oleg.popularmoviesapp.model.Movie;
+import com.example.oleg.popularmoviesapp.utilities.NetworkUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,13 +17,14 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
         super(context);
     }
 
+
     @Override
     public List<Movie> loadInBackground() {
         List<Movie> movieList = new ArrayList<>();
 
-        URL movieRequestUrl = MovieNetworkUtils.buildMovieUrl(MainActivity.currentSortOrder);
+        URL movieRequestUrl = NetworkUtils.buildMovieUrl(MainActivity.currentSortOrder);
         try {
-            String jsonResponse = MovieNetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
+            String jsonResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
             movieList = MovieJsonUtils.parseMoviesJson(jsonResponse);
         } catch (IOException e) {
             e.printStackTrace();

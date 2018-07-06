@@ -11,8 +11,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-public final class MovieNetworkUtils {
-    private static final String TAG = MovieNetworkUtils.class.getSimpleName();
+public final class NetworkUtils {
+    private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String MOVIE_BASE_URL = "https://api.themoviedb.org/3/movie/";
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
@@ -22,8 +22,12 @@ public final class MovieNetworkUtils {
 
     private static final String API_KEY_PARAM = "api_key";
     private static final String LANGUAGE_PARAM = "language";
+
+    //MOVIE
     private static final String PAGE_PARAM = "page";
 
+    //VIDEO
+    private static final String VIDEOS_PATH = "videos";
 
     public static URL buildMovieUrl(String sortOrder) {
         Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
@@ -42,7 +46,23 @@ public final class MovieNetworkUtils {
         return url;
     }
 
-    public static URL buildImageUrl(String size, String posterPath){
+    public static URL buildVideoURL(String id) {
+        Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
+                .appendPath(id)
+                .appendPath(VIDEOS_PATH)
+                .appendQueryParameter(API_KEY_PARAM, apiKey)
+                .build();
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "Built movie URL " + url);
+        return url;
+    }
+
+    public static URL buildImageUrl(String size, String posterPath) {
         Uri builtUri = Uri.parse(IMAGE_BASE_URL).buildUpon()
                 .appendPath(size)
                 .appendEncodedPath(posterPath)

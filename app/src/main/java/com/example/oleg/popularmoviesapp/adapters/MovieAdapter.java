@@ -16,7 +16,7 @@ import com.example.oleg.popularmoviesapp.R;
 import com.example.oleg.popularmoviesapp.activity.MainActivity;
 import com.example.oleg.popularmoviesapp.model.Movie;
 import com.example.oleg.popularmoviesapp.utilities.Constants;
-import com.example.oleg.popularmoviesapp.utilities.MovieNetworkUtils;
+import com.example.oleg.popularmoviesapp.utilities.NetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +57,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     public void onBindViewHolder(@NonNull MovieAdapterViewHolder holder, int position) {
         Movie movie = movieList.get(position);
         Glide.with(context)
-                .load(MovieNetworkUtils.buildImageUrl(Constants.KEY_IMAGE_SIZE_W185, movie.getPosterPath()).toString())
+                .load(NetworkUtils.buildImageUrl(Constants.KEY_IMAGE_SIZE_W185, movie.getPosterPath()).toString())
                 .transition(withCrossFade())
                 .into(holder.mPosterImageView);
         holder.mProgressBar.setVisibility(View.INVISIBLE);
@@ -105,7 +105,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         int layoutPosition = holder.getLayoutPosition();
         if (!mIsLoading && (layoutPosition > movieList.size() - 5)) {
             mIsLoading = true;
-            MovieNetworkUtils.page++;
+            NetworkUtils.page++;
             mLoaderManager.getLoader(MainActivity.MOVIE_LOADER_ID).forceLoad();
         }
     }

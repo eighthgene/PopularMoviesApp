@@ -1,8 +1,9 @@
-package com.example.oleg.popularmoviesapp.utilities;
+package com.example.oleg.popularmoviesapp.json;
 
 import android.util.Log;
 
 import com.example.oleg.popularmoviesapp.model.Movie;
+import com.example.oleg.popularmoviesapp.utilities.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;

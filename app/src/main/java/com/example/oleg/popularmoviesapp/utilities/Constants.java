@@ -2,8 +2,10 @@ package com.example.oleg.popularmoviesapp.utilities;
 
 
 public final class Constants {
-    //JSON
+
     public static final String KEY_RESULTS = "results";
+
+    //JSON MOVIE
     public static final String KEY_MOVIE_ID = "id";
     public static final String KEY_MOVIE_VOTE_AVERAGE = "vote_average";
     public static final String KEY_MOVIE_VOTE_COUNT = "vote_count";
@@ -14,6 +16,17 @@ public final class Constants {
     public static final String KEY_MOVIE_BACKDROP_PATH = "backdrop_path";
     public static final String KEY_MOVIE_OVERVIEW = "overview";
     public static final String KEY_MOVIE_RELEASE_DATE = "release_date";
+
+    //JSON VIDEO
+    public static final String KEY_VIDEO_ID = "id";
+    public static final String KEY_VIDEO_KEY = "key";
+    public static final String KEY_VIDEO_LANGUAGE = "iso_639_1";
+    public static final String KEY_VIDEO_NAME = "name";
+    public static final String KEY_VIDEO_SITE = "site";
+    public static final String KEY_VIDEO_SIZE = "size";
+    public static final String KEY_VIDEO_TYPE = "type";
+
+
 
     //SharedPreferences
     public static final String KEY_MOVIE_SORT_ORDER = "sortOrderMovie";

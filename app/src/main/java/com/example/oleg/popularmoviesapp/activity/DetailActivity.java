@@ -1,23 +1,35 @@
 package com.example.oleg.popularmoviesapp.activity;
 
 import android.content.Intent;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.oleg.popularmoviesapp.Loaders.VideoLoader;
 import com.example.oleg.popularmoviesapp.R;
 import com.example.oleg.popularmoviesapp.model.Movie;
+import com.example.oleg.popularmoviesapp.model.Video;
 import com.example.oleg.popularmoviesapp.utilities.Constants;
-import com.example.oleg.popularmoviesapp.utilities.MovieNetworkUtils;
+import com.example.oleg.popularmoviesapp.utilities.NetworkUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks {
+
+    private static final String TAG = DetailActivity.class.getSimpleName();
     public static final String EXTRA_MOVIE = "extra_movie";
     private Movie movie;
     private ImageView mBackdrop;
@@ -30,6 +42,9 @@ public class DetailActivity extends AppCompatActivity {
     private TextView mDateRelease;
     private TextView mOverview;
     private Toolbar mToolBar;
+    private List<Video> mVideos = new ArrayList<>();
+
+    private static final int LOADER_VIDEO_ID = 100;
 
 
     @Override
@@ -47,6 +62,7 @@ public class DetailActivity extends AppCompatActivity {
 
         findAllViews();
         populateUI(movie);
+        startLoadVideos();
 
     }
 
@@ -64,6 +80,20 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    private void startLoadVideos() {
+        int loaderId = LOADER_VIDEO_ID;
+        LoaderManager.LoaderCallbacks callbacks = DetailActivity.this;
+        Bundle bundleForLoader = new Bundle();
+
+        LoaderManager loaderManager = getSupportLoaderManager();
+        Loader<List<Video>> videoLoader = loaderManager.getLoader(loaderId);
+        if (videoLoader == null) {
+            loaderManager.initLoader(loaderId, bundleForLoader, callbacks).forceLoad();
+        } else {
+            loaderManager.restartLoader(loaderId, bundleForLoader, callbacks).forceLoad();
+        }
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -72,12 +102,12 @@ public class DetailActivity extends AppCompatActivity {
 
     private void populateUI(Movie movie) {
         Glide.with(this)
-                .load(MovieNetworkUtils.buildImageUrl(Constants.KEY_IMAGE_SIZE_W500, movie.getBackdropPath()).toString())
+                .load(NetworkUtils.buildImageUrl(Constants.KEY_IMAGE_SIZE_W500, movie.getBackdropPath()).toString())
                 .transition(withCrossFade())
                 .into(mBackdrop);
 
         Glide.with(this)
-                .load(MovieNetworkUtils.buildImageUrl(Constants.KEY_IMAGE_SIZE_W500, movie.getPosterPath()).toString())
+                .load(NetworkUtils.buildImageUrl(Constants.KEY_IMAGE_SIZE_W500, movie.getPosterPath()).toString())
                 .transition(withCrossFade())
                 .into(mPoster);
 
@@ -103,4 +133,29 @@ public class DetailActivity extends AppCompatActivity {
         return ((num * 10) * 5) / 100;
     }
 
+    @NonNull
+    @Override
+    public Loader onCreateLoader(int id, @Nullable Bundle args) {
+        switch (id) {
+            case LOADER_VIDEO_ID:
+                return new VideoLoader(this, movie.getId());
+        }
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader loader, Object data) {
+        switch (loader.getId()) {
+            case LOADER_VIDEO_ID:
+                if (data != null) {
+                    mVideos.addAll((List<Video>) data);
+                }
+        }
+
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader loader) {
+
+    }
 }
