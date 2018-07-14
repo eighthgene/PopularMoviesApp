@@ -118,4 +118,9 @@ public class Movie implements Parcelable {
     public String getReleaseDate() {
         return releaseDate;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

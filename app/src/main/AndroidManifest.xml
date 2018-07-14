@@ -7,29 +7,36 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_camera"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_camera_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activity.DetailActivity"
-            android:theme="@style/NoActionBar"
-            >
-        </activity>
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".activity.ReviewActivity"
+            android:parentActivityName=".activity.DetailActivity" />
+        <activity
+            android:name=".activity.FavoriteActivity"
+            android:parentActivityName=".activity.MainActivity" />
 
         <provider
             android:name=".data.MovieProvider"
             android:authorities="@string/content_authority"
-            android:exported="false"
-            >
-        </provider>
+            android:exported="false" />
+
+        <service
+            android:name=".sync.MovieSyncIntentService"
+            android:exported="false" />
 
     </application>
 

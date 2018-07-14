@@ -27,7 +27,12 @@ public final class NetworkUtils {
     private static final String PAGE_PARAM = "page";
 
     //VIDEO
+    public static final String YOUTUBE_THUMBNAIL_URL = "http://img.youtube.com/vi/%s/0.jpg";
+    public static final String YOUTUBE_VIDEO_URL = "http://www.youtube.com/watch?v=";
     private static final String VIDEOS_PATH = "videos";
+
+    //REVIEW
+    private static final String REVIEW_PATH = "reviews";
 
     public static URL buildMovieUrl(String sortOrder) {
         Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
@@ -62,6 +67,23 @@ public final class NetworkUtils {
         return url;
     }
 
+    public static URL buildReviewURL(String id) {
+        Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
+                .appendPath(id)
+                .appendPath(REVIEW_PATH)
+                .appendQueryParameter(API_KEY_PARAM, apiKey)
+                .build();
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "Built movie URL " + url);
+        return url;
+    }
+
+
     public static URL buildImageUrl(String size, String posterPath) {
         Uri builtUri = Uri.parse(IMAGE_BASE_URL).buildUpon()
                 .appendPath(size)
@@ -75,6 +97,16 @@ public final class NetworkUtils {
         }
         Log.d(TAG, "Built image URL " + url);
         return url;
+    }
+
+    //TODO
+    public static Uri buildVideYoutubeUrl(String key){
+        Uri builtUri = Uri.parse(YOUTUBE_VIDEO_URL + key);
+        return builtUri;
+    }
+
+    public static String buildVideoThumbnail(String key){
+        return String.format(YOUTUBE_THUMBNAIL_URL, key);
     }
 
 

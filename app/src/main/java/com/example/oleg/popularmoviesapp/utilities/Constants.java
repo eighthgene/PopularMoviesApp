@@ -26,6 +26,13 @@ public final class Constants {
     public static final String KEY_VIDEO_SIZE = "size";
     public static final String KEY_VIDEO_TYPE = "type";
 
+    //JSON REVIEW
+
+    public static final String KEY_REVIEW_ID = "id";
+    public static final String KEY_REVIEW_AUTHOR = "author";
+    public static final String KEY_REVIEW_CONTENT = "content";
+    public static final String KEY_REVIEW_URL = "url";
+
 
 
     //SharedPreferences
@@ -40,5 +47,7 @@ public final class Constants {
     //Movie sort order
     public static final String MOVIE_SORT_TOP_RATED = "top_rated";
     public static final String MOVIE_SORT_POPULAR = "popular";
+
+    public static final int COLUMN_WIDTH = 150;
 
 }

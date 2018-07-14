@@ -3,17 +3,21 @@ package com.example.oleg.popularmoviesapp.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,28 +28,59 @@ import android.widget.Toast;
 
 import com.example.oleg.popularmoviesapp.R;
 import com.example.oleg.popularmoviesapp.adapters.MovieAdapter;
-import com.example.oleg.popularmoviesapp.model.Movie;
+import com.example.oleg.popularmoviesapp.data.MovieContract;
+import com.example.oleg.popularmoviesapp.sync.SyncTask;
 import com.example.oleg.popularmoviesapp.utilities.Constants;
-import com.example.oleg.popularmoviesapp.Loaders.MovieLoader;
+import com.example.oleg.popularmoviesapp.utilities.GridAutoFitLayoutManager;
 import com.example.oleg.popularmoviesapp.utilities.NetworkUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks,
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         MovieAdapter.ListMovieClickListener, SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private List<Movie> movieList = new ArrayList<>();
+
+    //TODO delete other projections
+    public static final String[] MAIN_MOVIES_PROJECTION = {
+            MovieContract.MovieEntry.COLUMN_ID,
+            MovieContract.MovieEntry.COLUMN_ORIGINAL_TITLE,
+            MovieContract.MovieEntry.COLUMN_TITLE,
+            MovieContract.MovieEntry.COLUMN_POPULARITY,
+            MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE,
+            MovieContract.MovieEntry.COLUMN_VOTE_COUNT,
+            MovieContract.MovieEntry.COLUMN_POSTER_PATH,
+            MovieContract.MovieEntry.COLUMN_BACKDROP_PATH,
+            MovieContract.MovieEntry.COLUMN_OVERVIEW,
+            MovieContract.MovieEntry.COLUMN_RELEASE_DATE,
+    };
+
+    public static final int INDEX_MOVIE_ID = 0;
+    public static final int INDEX_MOVIE_ORIGINAL_TITLE = 1;
+    public static final int INDEX_MOVIE_TITLE = 2;
+    public static final int INDEX_MOVIE_POPULARITY = 3;
+    public static final int INDEX_MOVIE_VOTE_ACERAGE = 4;
+    public static final int INDEX_MOVIE_VOTE_COUNT = 5;
+    public static final int INDEX_MOVIE_POSTER_PATH = 6;
+    public static final int INDEX_MOVIE_BACKDROP_PATH = 7;
+    public static final int INDEX_MOVIE_OVERVIEW = 8;
+    public static final int INDEX_MOVIE_RELEASE_DATE = 9;
+
+
+    public static final int MOVIE_LOADER_ID = 0;
+    public static final int ViDEO_LOADER_ID = 1;
+    public static final int REVIEW_LOADER_ID = 2;
+
+    //private List<Movie> movieList = new ArrayList<>();
     private RecyclerView mRecycleView;
+    public static int mPosition = RecyclerView.NO_POSITION;
     private MovieAdapter mMovieAdapter;
     private ProgressBar mProgressBar;
     private SwipeRefreshLayout mSwiOnRefreshListener;
     private TextView mErrorMessage;
-    public static final int MOVIE_LOADER_ID = 0;
+
     private LoaderManager loaderManager;
     private SharedPreferences sharedPreferences;
     public static String currentSortOrder = Constants.MOVIE_SORT_POPULAR;
+    private int mDataSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,51 +94,109 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         //RecycleView
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-        mRecycleView.setLayoutManager(layoutManager);
+        GridAutoFitLayoutManager autoFitLayoutManager = new GridAutoFitLayoutManager(this, Constants.COLUMN_WIDTH);
+        mRecycleView.setLayoutManager(autoFitLayoutManager);
         mRecycleView.setHasFixedSize(true);
-        mMovieAdapter = new MovieAdapter(loaderManager, this);
+        mMovieAdapter = new MovieAdapter( this);
         mRecycleView.setAdapter(mMovieAdapter);
-
         mSwiOnRefreshListener.setOnRefreshListener(this);
+
+        //startLoadMovies();
 
     }
 
     @NonNull
     @Override
-    public Loader<List<Movie>> onCreateLoader(int id, @Nullable Bundle args) {
-        return new MovieLoader(this);
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+
+        switch (id) {
+            case MOVIE_LOADER_ID:
+                Uri movieQueryUri = MovieContract.MovieEntry.CONTENT_URI;
+
+                return new CursorLoader(this,
+                        movieQueryUri,
+                        MAIN_MOVIES_PROJECTION,
+                        null,
+                        null,
+                        null);
+
+            case ViDEO_LOADER_ID:
+
+            default:
+                throw new RuntimeException("Loader Not Implemented: " + id);
+        }
     }
 
-    //TODO
-
     @Override
-    public void onLoadFinished(@NonNull Loader loader, Object data) {
-        movieList.addAll((ArrayList<Movie>) data);
-        mMovieAdapter.setMovieList((ArrayList<Movie>) data);
-        mProgressBar.setVisibility(View.INVISIBLE);
-    }
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        //mDataSize = data.getCount();
+        if (data.getCount() == 0) {
+            SyncTask.startImmediateSyncMovies(this);
+        }
+        mMovieAdapter.swapCursor(data);
 
-    @Override
-    public void onLoaderReset(@NonNull Loader loader) {
+        //
+        Log.i(TAG, "RV position " + mPosition);
+
         //TODO
+        //if (data.getCount() != 0) showWeatherDataView();
+
     }
 
     @Override
-    public void onClickMovieListener(int clickedMovieIndex) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        mMovieAdapter.swapCursor(null);
+
+    }
+
+
+//    @NonNull
+//    @Override
+//    public Loader<List<Movie>> onCreateLoader(int id, @Nullable Bundle args) {
+//        return new MovieLoader(this);
+//    }
+//
+//    //TODO
+//
+//    @Override
+//    public void onLoadFinished(@NonNull Loader loader, Object data) {
+//        movieList.addAll((ArrayList<Movie>) data);
+//        mMovieAdapter.setMovieList((ArrayList<Movie>) data);
+//        mProgressBar.setVisibility(View.INVISIBLE);
+//    }
+//
+//    @Override
+//    public void onLoaderReset(@NonNull Loader loader) {
+//        //TODO
+//    }
+
+
+//    @Override
+//    public void onClickMovieListener(int clickedMovieIndex) {
+//        Intent intent = new Intent(this, DetailActivity.class);
+//        intent.putExtra(DetailActivity.EXTRA_MOVIE, movieList.get(clickedMovieIndex));
+//        startActivity(intent);
+//    }
+
+
+    @Override
+    public void onClickMovieListener(int clickedMovieID) {
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(DetailActivity.EXTRA_MOVIE, movieList.get(clickedMovieIndex));
+        Uri uriForMovieClicked = MovieContract.MovieEntry.buildMovieUriById(clickedMovieID);
+        Log.i(TAG, "Uri: " + uriForMovieClicked);
+        intent.setData(uriForMovieClicked);
+        //intent.putExtra(DetailActivity.EXTRA_MOVIE, movieList.get(clickedMovieIndex));
         startActivity(intent);
     }
-
 
     @Override
     public void onRefresh() {
         mSwiOnRefreshListener.setRefreshing(true);
-        if (checkConnectionInternet() && movieList.size() == 0) {
-            Toast.makeText(this, R.string.refreshed, Toast.LENGTH_LONG).show();
-            LoaderManager loaderManager = getSupportLoaderManager();
-            LoaderManager.LoaderCallbacks callbacks = MainActivity.this;
-            loaderManager.initLoader(MOVIE_LOADER_ID, new Bundle(), callbacks).forceLoad();
+        if (checkConnectionInternet() && mDataSize == 0) {
+//            Toast.makeText(this, R.string.refreshed, Toast.LENGTH_LONG).show();
+//            LoaderManager loaderManager = getSupportLoaderManager();
+//            LoaderManager.LoaderCallbacks callbacks = MainActivity.this;
+//            loaderManager.initLoader(MOVIE_LOADER_ID, new Bundle(), callbacks).forceLoad();
         }
         mSwiOnRefreshListener.setRefreshing(false);
     }
@@ -116,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-    private boolean isOnline() {
+     boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -124,10 +217,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private boolean checkConnectionInternet() {
-        if (!isOnline() && movieList.size() == 0) {
+        if (!isOnline() && mDataSize == 0) {
             mErrorMessage.setVisibility(View.VISIBLE);
             return false;
-        } else if (!isOnline() && movieList.size() != 0) {
+        } else if (!isOnline() && mDataSize != 0) {
             Toast.makeText(getBaseContext(), R.string.toast_no_internet_connection, Toast.LENGTH_LONG).show();
             return false;
         } else if (isOnline()) {
@@ -146,7 +239,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         } else if (currentSortOrder.equals(Constants.MOVIE_SORT_TOP_RATED)) {
             menu.findItem(R.id.sortHighestMenuItem).setChecked(true);
         }
-        setAppTitle();
         return true;
     }
 
@@ -162,6 +254,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 item.setChecked(true);
                 changeSaveMovieOrder(Constants.MOVIE_SORT_TOP_RATED);
                 break;
+            case (R.id.favoriteMovies):
+                Intent favoriteIntent = new Intent(this, FavoriteActivity.class);
+                startActivity(favoriteIntent);
+                break;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -170,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private void changeSaveMovieOrder(String sortOrder) {
         if (!currentSortOrder.equals(sortOrder)) {
             clearMovieList();
-            mProgressBar.setVisibility(View.VISIBLE);
+            //mProgressBar.setVisibility(View.VISIBLE);
             saveSortOrder(sortOrder);
             currentSortOrder = sortOrder;
             NetworkUtils.page = 1;
@@ -199,17 +296,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Bundle bundleForLoader = new Bundle();
 
         loaderManager = getSupportLoaderManager();
-        Loader<List<Movie>> movieLoader = loaderManager.getLoader(MOVIE_LOADER_ID);
+        Loader<Cursor> movieLoader = loaderManager.getLoader(MOVIE_LOADER_ID);
         if (movieLoader == null) {
             loaderManager.initLoader(loaderId, bundleForLoader, callbacks).forceLoad();
         } else {
             loaderManager.restartLoader(loaderId, bundleForLoader, callbacks).forceLoad();
         }
+
+        //getSupportLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
+
     }
 
     private void clearMovieList() {
         mMovieAdapter.clearMovieList();
-        movieList.clear();
+        //movieList.clear();
     }
 
 
@@ -220,4 +320,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             setTitle(R.string.app_title_top_rated);
         }
     }
+
+
 }

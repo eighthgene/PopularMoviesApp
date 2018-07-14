@@ -26,4 +26,24 @@ public class Video {
     public String getKey() {
         return key;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public String getSite() {
+        return site;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public String getType() {
+        return type;
+    }
 }

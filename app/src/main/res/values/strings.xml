@@ -1,10 +1,11 @@
 <resources>
-    <string name="app_name">Popular Movies App</string>
+    <string name="app_name">Popular Movies</string>
     <string name="rv_poster_description">Movie poster image</string>
     <string name="movie_title">Movie title</string>
 
     <string name="app_title_popular">Most popular movies</string>
     <string name="app_title_top_rated">Top rated movies</string>
+    <string name="app_title_favorite">Favorite movies</string>
 
     <string name="toast_no_internet_connection">No internet connection</string>
     <string name="refreshed">Refreshed</string>
@@ -21,8 +22,29 @@
     <string name="movie_poster">Movie poster</string>
     <string name="menu_item_sort_by_most_popular">Sort by most popular</string>
     <string name="menu_item_sort_by_highest_rated">Sort by highest-rated</string>
+    <string name="menu_item_favorites_movies">Favorite movies</string>
+
+
+    <string name="review_read_more_label">Read more…</string>
 
 
     <!-- Content provider -->
     <string name="content_authority">com.example.oleg.popularmoviesapp</string>
+
+    <!--Review activity-->
+    <string name="review_author_label">Author: </string>
+    <string name="review_content_label">Review: </string>
+    <string name="simple_text">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+        ut labore et dolore magna aliqua. Quisque non tellus orci ac auctor augue mauris augue.
+        Mattis rhoncus urna neque viverra justo nec. Vitae nunc sed velit dignissim. Varius morbi
+        enim nunc faucibus a pellentesque sit. Sed arcu non odio euismod lacinia at quis risus.
+        Tempus iaculis urna id volutpat. Nunc sed augue lacus viverra vitae congue eu. Ullamcorper
+        dignissim cras tincidunt lobortis feugiat vivamus at augue eget. Praesent elementum facilisis
+        leo vel fringilla est ullamcorper eget nulla. Tincidunt lobortis feugiat vivamus at augue eget
+        arcu dictum varius. Enim nec dui nunc mattis enim. Pellentesque sit amet porttitor eget
+        dolor morbi non arcu risus. Volutpat commodo sed egestas fringilla. Arcu odio ut
+        sem nulla pharetra. Ultricies leo integer malesuada nunc vel risus commodo viverra. Urna i
+        d volutpat lacus laoreet non. Diam maecenas ultricies mi eget mauris pharetra et ultrices.
+    </string>
 </resources>
