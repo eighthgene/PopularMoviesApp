@@ -48,4 +48,7 @@
         sem nulla pharetra. Ultricies leo integer malesuada nunc vel risus commodo viverra. Urna i
         d volutpat lacus laoreet non. Diam maecenas ultricies mi eget mauris pharetra et ultrices.
     </string>
+    <string name="content_swipe_down_to_refresh">Swipe down to Refresh</string>
+    <string name="content_trailer_video">Trailer video</string>
+    <string name="content_play_trailer">Play trailer</string>
 </resources>

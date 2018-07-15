@@ -29,14 +29,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                tools:src="@drawable/movie_poster" />
+                tools:src="@drawable/movie_poster"
+                android:contentDescription="@string/content_trailer_video"/>
 
             <ImageView
                 android:id="@+id/iv_youtube_play"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                tools:src="@drawable/ic_youtube_play" />
+                tools:src="@drawable/ic_youtube_play"
+                android:contentDescription="@string/content_play_trailer"/>
         </FrameLayout>
 
     </android.support.v7.widget.CardView>

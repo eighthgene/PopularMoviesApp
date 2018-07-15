@@ -14,20 +14,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -50,12 +43,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     private static final String TAG = DetailActivity.class.getSimpleName();
 
-    public static final String LOADER_TYPE_VIDEOS = "videos";
-    public static final String LOADER_TYPE_REVIEWS = "reviews";
-    public static final String LOADER_TYPE_FAVORITE = "favorite";
+    private static final String LOADER_TYPE_VIDEOS = "videos";
+    private static final String LOADER_TYPE_REVIEWS = "reviews";
+    private static final String LOADER_TYPE_FAVORITE = "favorite";
 
-    public static final String FAB_STATE_ENABLED = "1";
-    public static final String FAB_STATE_DISABLED = "0";
+    private static final String FAB_STATE_ENABLED = "1";
+    private static final String FAB_STATE_DISABLED = "0";
 
     private static String FAB_STATE_CURRENT;
 
@@ -72,16 +65,16 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             MovieContract.MovieEntry.COLUMN_RELEASE_DATE,
     };
 
-    public static final int INDEX_MOVIE_ID = 0;
-    public static final int INDEX_MOVIE_ORIGINAL_TITLE = 1;
-    public static final int INDEX_MOVIE_TITLE = 2;
-    public static final int INDEX_MOVIE_POPULARITY = 3;
-    public static final int INDEX_MOVIE_VOTE_AVERAGE = 4;
-    public static final int INDEX_MOVIE_VOTE_COUNT = 5;
-    public static final int INDEX_MOVIE_POSTER_PATH = 6;
-    public static final int INDEX_MOVIE_BACKDROP_PATH = 7;
-    public static final int INDEX_MOVIE_OVERVIEW = 8;
-    public static final int INDEX_MOVIE_RELEASE_DATE = 9;
+    private static final int INDEX_MOVIE_ID = 0;
+    private static final int INDEX_MOVIE_ORIGINAL_TITLE = 1;
+    private static final int INDEX_MOVIE_TITLE = 2;
+    private static final int INDEX_MOVIE_POPULARITY = 3;
+    private static final int INDEX_MOVIE_VOTE_AVERAGE = 4;
+    private static final int INDEX_MOVIE_VOTE_COUNT = 5;
+    private static final int INDEX_MOVIE_POSTER_PATH = 6;
+    private static final int INDEX_MOVIE_BACKDROP_PATH = 7;
+    private static final int INDEX_MOVIE_OVERVIEW = 8;
+    private static final int INDEX_MOVIE_RELEASE_DATE = 9;
 
     private static final String[] DETAIL_FAVORITE_PROJECTION = {
             MovieContract.MovieEntry.COLUMN_ID,
@@ -223,7 +216,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         }
     }
 
-    public void changeStateFavorite(String state) {
+    private void changeStateFavorite(String state) {
         switch (state) {
             case FAB_STATE_ENABLED:
                 binding.fabFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_enabled));
@@ -241,7 +234,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         return ((num * 10) * 5) / 100;
     }
 
-    boolean isOnline() {
+    private boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();

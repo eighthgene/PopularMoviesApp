@@ -1,8 +1,6 @@
 package com.example.oleg.popularmoviesapp.utilities;
 
 import android.content.ContentValues;
-import android.database.Cursor;
-import android.util.Log;
 
 import com.example.oleg.popularmoviesapp.data.MovieContract;
 import com.example.oleg.popularmoviesapp.model.Movie;

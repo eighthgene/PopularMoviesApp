@@ -11,9 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.oleg.popularmoviesapp.model.Movie;
-import com.example.oleg.popularmoviesapp.utilities.NetworkUtils;
-
 public class MovieProvider extends ContentProvider {
     public static final int CODE_MOVIE = 100;
     public static final int CODE_MOVIE_WITH_ID = 101;

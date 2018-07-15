@@ -27,7 +27,8 @@
             android:layout_height="@dimen/iv_height_favorite_empty_image_view"
             android:layout_gravity="center"
             android:src="@drawable/ic_favorite_empty"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            android:contentDescription="@string/msg_favorite_empty" />
 
         <TextView
             android:id="@+id/tv_favorite_empty"

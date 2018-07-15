@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +15,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
@@ -24,7 +22,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,13 +55,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
 
-    public static final int MOVIE_LOADER_ID = 0;
+    private static final int MOVIE_LOADER_ID = 0;
     //public static final int ViDEO_LOADER_ID = 1;
     //public static final int REVIEW_LOADER_ID = 2;
 
     //private List<Movie> movieList = new ArrayList<>();
     private RecyclerView mRecycleView;
-    public static int mPosition = RecyclerView.NO_POSITION;
+    private static int mPosition = RecyclerView.NO_POSITION;
     private MovieAdapter mMovieAdapter;
     //private ProgressBar mProgressBar;
     private SwipeRefreshLayout mSwiOnRefreshListener;
@@ -176,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-     boolean isOnline() {
+     private boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
