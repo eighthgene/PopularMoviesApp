@@ -2,6 +2,7 @@ package com.example.oleg.popularmoviesapp.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.oleg.popularmoviesapp.R;
+import com.example.oleg.popularmoviesapp.activity.DetailActivity;
 import com.example.oleg.popularmoviesapp.activity.MainActivity;
 import com.example.oleg.popularmoviesapp.data.MovieContract;
 import com.example.oleg.popularmoviesapp.sync.SyncTask;
@@ -96,11 +98,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     public void clearMovieList() {
         mCursor = null;
-        int row_deleted = context.getContentResolver().delete(
-                MovieContract.MovieEntry.CONTENT_URI,
-                null,
-                null);
-        Log.i(TAG, "clearMovieList rows deleted: " + row_deleted);
         mIsLoading = false;
         notifyDataSetChanged();
     }

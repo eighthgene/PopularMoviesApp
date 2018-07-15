@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,14 +75,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private RecyclerView mRecycleView;
     public static int mPosition = RecyclerView.NO_POSITION;
     private MovieAdapter mMovieAdapter;
-    private ProgressBar mProgressBar;
+    //private ProgressBar mProgressBar;
     private SwipeRefreshLayout mSwiOnRefreshListener;
     private TextView mErrorMessage;
-
+    private ImageView mLostConnectionImageView;
     private LoaderManager loaderManager;
     private SharedPreferences sharedPreferences;
     public static String currentSortOrder = Constants.MOVIE_SORT_POPULAR;
-    private int mDataSize;
+    private int mDataSize = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
 
         findAllViews();
-        checkConnectionInternet();
         loadSortOrder();
         startLoadMovies();
 
@@ -120,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         null,
                         null);
 
-            case ViDEO_LOADER_ID:
+            //case ViDEO_LOADER_ID:
 
             default:
                 throw new RuntimeException("Loader Not Implemented: " + id);
@@ -129,8 +130,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        //mDataSize = data.getCount();
-        if (data.getCount() == 0) {
+
+        if (data.getCount() == 0 && isOnline()) {
             SyncTask.startImmediateSyncMovies(this);
         }
         mMovieAdapter.swapCursor(data);
@@ -140,7 +141,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         //TODO
         //if (data.getCount() != 0) showWeatherDataView();
-
+        mDataSize = data.getCount();
+        checkConnectionInternet();
     }
 
     @Override
@@ -148,35 +150,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mMovieAdapter.swapCursor(null);
 
     }
-
-
-//    @NonNull
-//    @Override
-//    public Loader<List<Movie>> onCreateLoader(int id, @Nullable Bundle args) {
-//        return new MovieLoader(this);
-//    }
-//
-//    //TODO
-//
-//    @Override
-//    public void onLoadFinished(@NonNull Loader loader, Object data) {
-//        movieList.addAll((ArrayList<Movie>) data);
-//        mMovieAdapter.setMovieList((ArrayList<Movie>) data);
-//        mProgressBar.setVisibility(View.INVISIBLE);
-//    }
-//
-//    @Override
-//    public void onLoaderReset(@NonNull Loader loader) {
-//        //TODO
-//    }
-
-
-//    @Override
-//    public void onClickMovieListener(int clickedMovieIndex) {
-//        Intent intent = new Intent(this, DetailActivity.class);
-//        intent.putExtra(DetailActivity.EXTRA_MOVIE, movieList.get(clickedMovieIndex));
-//        startActivity(intent);
-//    }
 
 
     @Override
@@ -193,10 +166,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onRefresh() {
         mSwiOnRefreshListener.setRefreshing(true);
         if (checkConnectionInternet() && mDataSize == 0) {
-//            Toast.makeText(this, R.string.refreshed, Toast.LENGTH_LONG).show();
-//            LoaderManager loaderManager = getSupportLoaderManager();
-//            LoaderManager.LoaderCallbacks callbacks = MainActivity.this;
-//            loaderManager.initLoader(MOVIE_LOADER_ID, new Bundle(), callbacks).forceLoad();
+            Toast.makeText(this, R.string.refreshed, Toast.LENGTH_LONG).show();
+            LoaderManager loaderManager = getSupportLoaderManager();
+            LoaderManager.LoaderCallbacks callbacks = MainActivity.this;
+            loaderManager.initLoader(MOVIE_LOADER_ID, new Bundle(), callbacks).forceLoad();
+        }
+        else if(!checkConnectionInternet() && mDataSize == 0){
+            Toast.makeText(this, R.string.toast_no_internet_connection, Toast.LENGTH_LONG).show();
         }
         mSwiOnRefreshListener.setRefreshing(false);
     }
@@ -205,7 +181,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mSwiOnRefreshListener = findViewById(R.id.sr_movies);
         mRecycleView = findViewById(R.id.rv_movies);
         mErrorMessage = findViewById(R.id.tv_error_message);
-        mProgressBar = findViewById(R.id.pb_empty_list_movies);
+        //mProgressBar = findViewById(R.id.pb_empty_list_movies);
+        mLostConnectionImageView = findViewById(R.id.iv_lost_connection);
     }
 
 
@@ -219,12 +196,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private boolean checkConnectionInternet() {
         if (!isOnline() && mDataSize == 0) {
             mErrorMessage.setVisibility(View.VISIBLE);
+            mLostConnectionImageView.setVisibility(View.VISIBLE);
             return false;
         } else if (!isOnline() && mDataSize != 0) {
             Toast.makeText(getBaseContext(), R.string.toast_no_internet_connection, Toast.LENGTH_LONG).show();
             return false;
         } else if (isOnline()) {
             mErrorMessage.setVisibility(View.GONE);
+            mLostConnectionImageView.setVisibility(View.GONE);
             return true;
         }
         return false;
@@ -307,8 +286,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
+    //TODO
     private void clearMovieList() {
+        int row_deleted = getBaseContext().getContentResolver().delete(
+                MovieContract.MovieEntry.CONTENT_URI,
+                null,
+                null);
+        Log.i(TAG, "clearMovieList rows deleted: " + row_deleted);
         mMovieAdapter.clearMovieList();
+        mDataSize = 0;
+        checkConnectionInternet();
         //movieList.clear();
     }
 

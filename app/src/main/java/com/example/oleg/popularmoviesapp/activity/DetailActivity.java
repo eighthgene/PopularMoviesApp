@@ -206,7 +206,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         mVideoRecycleView = findViewById(R.id.rv_videos);
         mReviewRecycleView = findViewById(R.id.rv_reviews);
         mFavoriteFloatingActionButton = findViewById(R.id.fab_favorite);
-
     }
 
     @Override
@@ -488,7 +487,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 //    }
 
 
-    class SyncTaskLoader extends AsyncTask<Void, String, Void> {
+    public class SyncTaskLoader extends AsyncTask<Void, String, Void> {
         private String mMovieId;
         private final Context mContext;
         private String mTypeTask;

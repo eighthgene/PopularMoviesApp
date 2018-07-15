@@ -13,6 +13,9 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.oleg.popularmoviesapp.R;
 import com.example.oleg.popularmoviesapp.adapters.MovieAdapter;
@@ -24,6 +27,9 @@ import com.example.oleg.popularmoviesapp.utilities.GridAutoFitLayoutManager;
 public class FavoriteActivity extends AppCompatActivity implements MovieAdapter.ListMovieClickListener,
         LoaderManager.LoaderCallbacks<Cursor> {
     private MovieAdapter mMovieAdapter;
+    private ImageView mFavoriteEmptyImageView;
+    private TextView mFavoriteEmptyTextView;
+    private RecyclerView mRecycleView;
 
     public static final int MOVIE_FAVORITE_LOADER = 100;
 
@@ -33,10 +39,10 @@ public class FavoriteActivity extends AppCompatActivity implements MovieAdapter.
         setContentView(R.layout.activity_favorite);
         setTitle(R.string.app_title_favorite);
 
-
+        findViews();
         //GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         GridAutoFitLayoutManager gridAutoFitLayoutManager = new GridAutoFitLayoutManager(this, Constants.COLUMN_WIDTH);
-        RecyclerView mRecycleView = findViewById(R.id.rv_favorite);
+
         mRecycleView.setLayoutManager(gridAutoFitLayoutManager);
         mRecycleView.setHasFixedSize(true);
         mMovieAdapter = new MovieAdapter(this);
@@ -83,7 +89,7 @@ public class FavoriteActivity extends AppCompatActivity implements MovieAdapter.
             SyncTask.startImmediateSyncMovies(this);
         }
         mMovieAdapter.swapCursor(data);
-
+        checkFavoriteList(data.getCount());
         //
 
     }
@@ -91,5 +97,22 @@ public class FavoriteActivity extends AppCompatActivity implements MovieAdapter.
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         mMovieAdapter.swapCursor(null);
+    }
+
+    private void checkFavoriteList(int dataSize){
+        if (dataSize == 0){
+            mFavoriteEmptyImageView.setVisibility(View.VISIBLE);
+            mFavoriteEmptyTextView.setVisibility(View.VISIBLE);
+        }
+        else {
+            mFavoriteEmptyImageView.setVisibility(View.GONE);
+            mFavoriteEmptyTextView.setVisibility(View.GONE);
+        }
+    }
+
+    private void findViews(){
+        mFavoriteEmptyImageView = findViewById(R.id.iv_favorite_empty);
+        mFavoriteEmptyTextView = findViewById(R.id.tv_favorite_empty);
+        mRecycleView = findViewById(R.id.rv_favorite);
     }
 }

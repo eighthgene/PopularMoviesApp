@@ -24,8 +24,6 @@ import java.util.List;
 
 public class SyncTask {
     private static final String TAG = SyncTask.class.getSimpleName();
-    public static final String ACTION_SYNC_MOVIES = "sync-movies";
-    public static final String ACTION_SYNC_VIDEOS = "sync-videos";
 
     public static void startImmediateSyncMovies(final Context context) {
         Intent intentToSyncImmediately = new Intent(context, MovieSyncIntentService.class);
