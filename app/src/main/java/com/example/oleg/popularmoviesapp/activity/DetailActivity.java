@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.databinding.DataBindingUtil;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -36,6 +37,7 @@ import com.example.oleg.popularmoviesapp.R;
 import com.example.oleg.popularmoviesapp.adapters.ReviewAdapter;
 import com.example.oleg.popularmoviesapp.adapters.VideoAdapter;
 import com.example.oleg.popularmoviesapp.data.MovieContract;
+import com.example.oleg.popularmoviesapp.databinding.ActivityDetailBinding;
 import com.example.oleg.popularmoviesapp.model.Movie;
 import com.example.oleg.popularmoviesapp.sync.SyncTask;
 import com.example.oleg.popularmoviesapp.utilities.Constants;
@@ -84,7 +86,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private static final String[] DETAIL_FAVORITE_PROJECTION = {
             MovieContract.MovieEntry.COLUMN_ID,
     };
-    public static final int INDEX_FAVORITE_ID = 0;
 
     private static final String[] DETAIL_VIDEO_PROJECTION = {
             MovieContract.VideoEntry._ID,
@@ -102,44 +103,28 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             MovieContract.ReviewEntry.COLUMN_ID,
     };
 
-    public static final int INDEX_REVIEW_AUTHOR = 0;
     public static final int INDEX_REVIEW_CONTENT = 1;
     public static final int INDEX_REVIEW_ID = 2;
 
 
-    //public static final String EXTRA_MOVIE = "extra_movie";
     private static final int ID_DETAIL_MOVIE_LOADER = 300;
     private static final int ID_DETAIL_VIDEO_LOADER = 400;
     private static final int ID_DETAIL_REVIEW_LOADER = 500;
     private static final int ID_DETAIL_FAVORITE_LOADER = 600;
 
-    private ImageView mBackdrop;
-    private ImageView mPoster;
-    private CollapsingToolbarLayout mCollapsingToolbarLayout;
-    private TextView mOriginalTitle;
-    private TextView mMovieRating;
-    private TextView mVoteCounting;
-    private RatingBar mRatingBar;
-    private TextView mDateRelease;
-    private TextView mOverview;
-    private Toolbar mToolBar;
-    private RecyclerView mVideoRecycleView;
-    private RecyclerView mReviewRecycleView;
+    private ActivityDetailBinding binding;
     private VideoAdapter mVideoAdapter;
     private ReviewAdapter mReviewAdapter;
-    private FloatingActionButton mFavoriteFloatingActionButton;
-    //private List<Video> mVideos = new ArrayList<>();
 
     private Uri mUri;
     private String mIdMovie;
     private Cursor mCursorMovie;
-    //private static final int LOADER_VIDEO_ID = 100;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
@@ -147,12 +132,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         mUri = getIntent().getData();
         if (mUri == null) throw new NullPointerException("URI for DetailActivity cannot be null");
 
-        findAllViews();
+        //findAllViews();
         initVideoRecycleView();
         initReviewRecycleView();
 
 
-        mFavoriteFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+        binding.fabFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SyncTaskLoader syncTask = new SyncTaskLoader(getBaseContext(), mIdMovie, LOADER_TYPE_FAVORITE);
@@ -177,36 +162,21 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private void initReviewRecycleView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
-        mReviewRecycleView.setLayoutManager(layoutManager);
-        mReviewRecycleView.setHasFixedSize(true);
+        binding.rvReviews.setLayoutManager(layoutManager);
+        binding.rvReviews.setHasFixedSize(true);
         mReviewAdapter = new ReviewAdapter(this);
-        mReviewRecycleView.setAdapter(mReviewAdapter);
+        binding.rvReviews.setAdapter(mReviewAdapter);
     }
 
     private void initVideoRecycleView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
-        mVideoRecycleView.setLayoutManager(layoutManager);
-        mVideoRecycleView.setHasFixedSize(true);
+        binding.rvVideos.setLayoutManager(layoutManager);
+        binding.rvVideos.setHasFixedSize(true);
         mVideoAdapter = new VideoAdapter(this);
-        mVideoRecycleView.setAdapter(mVideoAdapter);
+        binding.rvVideos.setAdapter(mVideoAdapter);
     }
 
-    private void findAllViews() {
-        mBackdrop = findViewById(R.id.iv_detail_backdrop);
-        mPoster = findViewById(R.id.iv_detail_poster);
-        mCollapsingToolbarLayout = findViewById(R.id.ctb_movie_detail);
-        mOriginalTitle = findViewById(R.id.tv_original_title);
-        mMovieRating = findViewById(R.id.tv_movie_rating);
-        mVoteCounting = findViewById(R.id.tv_vote_counting);
-        mRatingBar = findViewById(R.id.rb_movie_rating);
-        mDateRelease = findViewById(R.id.tv_date_release);
-        mOverview = findViewById(R.id.tv_detail_overview);
-        mToolBar = findViewById(R.id.tb_movie_detail);
-        mVideoRecycleView = findViewById(R.id.rv_videos);
-        mReviewRecycleView = findViewById(R.id.rv_reviews);
-        mFavoriteFloatingActionButton = findViewById(R.id.fab_favorite);
-    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -227,27 +197,27 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 .load(NetworkUtils.buildImageUrl(Constants.KEY_IMAGE_SIZE_W500, movie.getBackdropPath()).toString())
                 .apply(options)
                 .transition(withCrossFade())
-                .into(mBackdrop);
+                .into(binding.ivDetailBackdrop);
 
         Glide.with(this)
                 .load(NetworkUtils.buildImageUrl(Constants.KEY_IMAGE_SIZE_W500, movie.getPosterPath()).toString())
                 .apply(options)
                 .transition(withCrossFade())
-                .into(mPoster);
+                .into(binding.ivDetailPoster);
 
-        mCollapsingToolbarLayout.setTitle(movie.getTitle());
+        binding.ctbMovieDetail.setTitle(movie.getTitle());
 
         String originalTitle = "\"" + movie.getOriginalTitle() + "\"";
-        mOriginalTitle.setText(originalTitle);
+        binding.tvOriginalTitle.setText(originalTitle);
 
-        mMovieRating.setText(String.valueOf(movie.getVoteAverage()));
-        mRatingBar.setRating(convertToStarRating(movie.getVoteAverage()));
-        mVoteCounting.setText(String.valueOf(movie.getVoteCount() + " " + getString(R.string.detail_votes_label)));
-        mDateRelease.setText(movie.getReleaseDate());
+        binding.tvMovieRating.setText(String.valueOf(movie.getVoteAverage()));
+        binding.rbMovieRating.setRating(convertToStarRating(movie.getVoteAverage()));
+        binding.tvVoteCounting.setText(String.valueOf(movie.getVoteCount() + " " + getString(R.string.detail_votes_label)));
+        binding.tvDateRelease.setText(movie.getReleaseDate());
 
-        mOverview.setText(movie.getOverview());
+        binding.tvDetailOverview.setText(movie.getOverview());
 
-        setSupportActionBar(mToolBar);
+        setSupportActionBar(binding.tbMovieDetail);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -256,12 +226,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     public void changeStateFavorite(String state) {
         switch (state) {
             case FAB_STATE_ENABLED:
-                mFavoriteFloatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_enabled));
+                binding.fabFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_enabled));
                 FAB_STATE_CURRENT = FAB_STATE_ENABLED;
 
                 break;
             case FAB_STATE_DISABLED:
-                mFavoriteFloatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite));
+                binding.fabFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite));
                 FAB_STATE_CURRENT = FAB_STATE_DISABLED;
                 break;
         }
@@ -365,8 +335,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                         data.getString(INDEX_MOVIE_RELEASE_DATE)
                 );
 
-//                String fabState = data.getString(INDEX_MOVIE_FAVORITE);
-//                changeStateFavorite(fabState);
 
                 populateUI(movie);
                 break;
@@ -447,44 +415,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         reviewIntent.setData(reviewUri);
         startActivity(reviewIntent);
     }
-
-    public void addRemoveFavorite(String idMovie, String state) {
-        ContentValues values = new ContentValues();
-        if (state.equals(FAB_STATE_DISABLED)) {
-            values.put(MovieContract.MovieEntry.COLUMN_FAVORITE, 1);
-        } else
-            values.put(MovieContract.MovieEntry.COLUMN_FAVORITE, 0);
-        Uri movieUri = MovieContract.MovieEntry.buildMovieUriById(Integer.valueOf(idMovie));
-        getContentResolver().update(movieUri, values, null, null);
-    }
-
-
-    //TODO Loader video
-//    @NonNull
-//    @Override
-//    public Loader onCreateLoader(int id, @Nullable Bundle args) {
-//        switch (id) {
-//            case LOADER_VIDEO_ID:
-//                return new VideoLoader(this, movie.getId());
-//        }
-//        return null;
-//    }
-//
-//    @Override
-//    public void onLoadFinished(@NonNull Loader loader, Object data) {
-//        switch (loader.getId()) {
-//            case LOADER_VIDEO_ID:
-//                if (data != null) {
-//                    mVideos.addAll((List<Video>) data);
-//                }
-//        }
-//
-//    }
-//
-//    @Override
-//    public void onLoaderReset(@NonNull Loader loader) {
-//
-//    }
 
 
     public class SyncTaskLoader extends AsyncTask<Void, String, Void> {

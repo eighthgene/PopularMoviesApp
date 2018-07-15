@@ -46,5 +46,15 @@
             android:textSize="@dimen/msg_no_connection"
             android:visibility="invisible" />
 
+        <ImageView
+            android:id="@+id/iv_swipe_down"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:paddingTop="20dp"
+            android:visibility="invisible"
+            android:src="@drawable/ic_swipe_down"
+            />
+
     </LinearLayout>
 </FrameLayout>

@@ -56,20 +56,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     };
 
     public static final int INDEX_MOVIE_ID = 0;
-    public static final int INDEX_MOVIE_ORIGINAL_TITLE = 1;
-    public static final int INDEX_MOVIE_TITLE = 2;
-    public static final int INDEX_MOVIE_POPULARITY = 3;
-    public static final int INDEX_MOVIE_VOTE_ACERAGE = 4;
-    public static final int INDEX_MOVIE_VOTE_COUNT = 5;
+    //public static final int INDEX_MOVIE_ORIGINAL_TITLE = 1;
+    //public static final int INDEX_MOVIE_TITLE = 2;
+    //public static final int INDEX_MOVIE_POPULARITY = 3;
+    //public static final int INDEX_MOVIE_VOTE_ACERAGE = 4;
+    //public static final int INDEX_MOVIE_VOTE_COUNT = 5;
     public static final int INDEX_MOVIE_POSTER_PATH = 6;
-    public static final int INDEX_MOVIE_BACKDROP_PATH = 7;
-    public static final int INDEX_MOVIE_OVERVIEW = 8;
-    public static final int INDEX_MOVIE_RELEASE_DATE = 9;
+    //public static final int INDEX_MOVIE_BACKDROP_PATH = 7;
+    //public static final int INDEX_MOVIE_OVERVIEW = 8;
+    //public static final int INDEX_MOVIE_RELEASE_DATE = 9;
 
 
     public static final int MOVIE_LOADER_ID = 0;
-    public static final int ViDEO_LOADER_ID = 1;
-    public static final int REVIEW_LOADER_ID = 2;
+    //public static final int ViDEO_LOADER_ID = 1;
+    //public static final int REVIEW_LOADER_ID = 2;
 
     //private List<Movie> movieList = new ArrayList<>();
     private RecyclerView mRecycleView;
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private SwipeRefreshLayout mSwiOnRefreshListener;
     private TextView mErrorMessage;
     private ImageView mLostConnectionImageView;
-    private LoaderManager loaderManager;
+    private ImageView mSwipeDownImageView;
     private SharedPreferences sharedPreferences;
     public static String currentSortOrder = Constants.MOVIE_SORT_POPULAR;
     private int mDataSize = 0;
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         startLoadMovies();
 
         //RecycleView
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        //GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         GridAutoFitLayoutManager autoFitLayoutManager = new GridAutoFitLayoutManager(this, Constants.COLUMN_WIDTH);
         mRecycleView.setLayoutManager(autoFitLayoutManager);
         mRecycleView.setHasFixedSize(true);
@@ -139,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //
         Log.i(TAG, "RV position " + mPosition);
 
-        //TODO
         //if (data.getCount() != 0) showWeatherDataView();
         mDataSize = data.getCount();
         checkConnectionInternet();
@@ -148,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         mMovieAdapter.swapCursor(null);
-
     }
 
 
@@ -183,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mErrorMessage = findViewById(R.id.tv_error_message);
         //mProgressBar = findViewById(R.id.pb_empty_list_movies);
         mLostConnectionImageView = findViewById(R.id.iv_lost_connection);
+        mSwipeDownImageView = findViewById(R.id.iv_swipe_down);
     }
 
 
@@ -197,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (!isOnline() && mDataSize == 0) {
             mErrorMessage.setVisibility(View.VISIBLE);
             mLostConnectionImageView.setVisibility(View.VISIBLE);
+            mSwipeDownImageView.setVisibility(View.VISIBLE);
             return false;
         } else if (!isOnline() && mDataSize != 0) {
             Toast.makeText(getBaseContext(), R.string.toast_no_internet_connection, Toast.LENGTH_LONG).show();
@@ -204,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         } else if (isOnline()) {
             mErrorMessage.setVisibility(View.GONE);
             mLostConnectionImageView.setVisibility(View.GONE);
+            mSwipeDownImageView.setVisibility(View.GONE);
             return true;
         }
         return false;
@@ -246,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private void changeSaveMovieOrder(String sortOrder) {
         if (!currentSortOrder.equals(sortOrder)) {
             clearMovieList();
-            //mProgressBar.setVisibility(View.VISIBLE);
             saveSortOrder(sortOrder);
             currentSortOrder = sortOrder;
             NetworkUtils.page = 1;
@@ -266,6 +266,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         sharedPreferences = getPreferences(MODE_PRIVATE);
         currentSortOrder = sharedPreferences.getString(Constants.KEY_MOVIE_SORT_ORDER,
                 Constants.MOVIE_SORT_POPULAR);
+        setAppTitle();
     }
 
 
@@ -274,16 +275,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         LoaderManager.LoaderCallbacks callbacks = MainActivity.this;
         Bundle bundleForLoader = new Bundle();
 
-        loaderManager = getSupportLoaderManager();
+        LoaderManager loaderManager = getSupportLoaderManager();
         Loader<Cursor> movieLoader = loaderManager.getLoader(MOVIE_LOADER_ID);
         if (movieLoader == null) {
             loaderManager.initLoader(loaderId, bundleForLoader, callbacks).forceLoad();
         } else {
             loaderManager.restartLoader(loaderId, bundleForLoader, callbacks).forceLoad();
         }
-
         //getSupportLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
-
     }
 
     //TODO
@@ -296,7 +295,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mMovieAdapter.clearMovieList();
         mDataSize = 0;
         checkConnectionInternet();
-        //movieList.clear();
     }
 
 
@@ -307,6 +305,5 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             setTitle(R.string.app_title_top_rated);
         }
     }
-
 
 }

@@ -82,12 +82,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         return mCursor.getCount();
     }
 
-//    public void setMovieList(ArrayList<Movie> list) {
-//        movieList.addAll(list);
-//        mIsLoading = false;
-//        notifyDataSetChanged();
-//    }
-
     public void swapCursor(Cursor newCursor) {
         if (mCursor != newCursor) {
             mCursor = newCursor;
