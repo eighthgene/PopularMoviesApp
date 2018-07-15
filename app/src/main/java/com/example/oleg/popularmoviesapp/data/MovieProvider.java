@@ -277,7 +277,6 @@ public class MovieProvider extends ContentProvider {
         }
     }
 
-    //TODO for Favorite movie
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {

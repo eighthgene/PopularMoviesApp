@@ -29,8 +29,8 @@
 
         <ImageView
             android:id="@+id/iv_lost_connection"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/iv_width_main_connection_image_view"
+            android:layout_height="@dimen/iv_height_main_connection_image_view"
             android:layout_gravity="center"
             android:src="@drawable/ic_lost_connection"
             android:visibility="invisible" />

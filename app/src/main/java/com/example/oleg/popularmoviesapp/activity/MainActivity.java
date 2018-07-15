@@ -40,8 +40,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         MovieAdapter.ListMovieClickListener, SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
-
-    //TODO delete other projections
     public static final String[] MAIN_MOVIES_PROJECTION = {
             MovieContract.MovieEntry.COLUMN_ID,
             MovieContract.MovieEntry.COLUMN_ORIGINAL_TITLE,
@@ -56,15 +54,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     };
 
     public static final int INDEX_MOVIE_ID = 0;
-    //public static final int INDEX_MOVIE_ORIGINAL_TITLE = 1;
-    //public static final int INDEX_MOVIE_TITLE = 2;
-    //public static final int INDEX_MOVIE_POPULARITY = 3;
-    //public static final int INDEX_MOVIE_VOTE_ACERAGE = 4;
-    //public static final int INDEX_MOVIE_VOTE_COUNT = 5;
     public static final int INDEX_MOVIE_POSTER_PATH = 6;
-    //public static final int INDEX_MOVIE_BACKDROP_PATH = 7;
-    //public static final int INDEX_MOVIE_OVERVIEW = 8;
-    //public static final int INDEX_MOVIE_RELEASE_DATE = 9;
+
 
 
     public static final int MOVIE_LOADER_ID = 0;
@@ -285,7 +276,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //getSupportLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
     }
 
-    //TODO
     private void clearMovieList() {
         int row_deleted = getBaseContext().getContentResolver().delete(
                 MovieContract.MovieEntry.CONTENT_URI,

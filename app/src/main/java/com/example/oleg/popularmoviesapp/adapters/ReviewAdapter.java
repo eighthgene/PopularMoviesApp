@@ -46,7 +46,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
         String contentReview = mCursor.getString(DetailActivity.INDEX_REVIEW_CONTENT);
         Log.i(TAG, "contentReview: " + contentReview);
         holder.mContentTextView.setText(contentReview);
-        holder.mReadMoreTextView.setText(R.string.review_read_more_label);
+        //holder.mReadMoreTextView.setText(R.string.review_read_more_label);
     }
 
     @Override
@@ -65,12 +65,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
 
     public class ReviewAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView mContentTextView;
-        private final TextView mReadMoreTextView;
+        //private final TextView mReadMoreTextView;
 
         public ReviewAdapterViewHolder(View itemView) {
             super(itemView);
             mContentTextView = itemView.findViewById(R.id.tv_review_content);
-            mReadMoreTextView = itemView.findViewById(R.id.tv_review_read_more);
+            //mReadMoreTextView = itemView.findViewById(R.id.tv_review_read_more);
             itemView.setOnClickListener(this);
         }
 

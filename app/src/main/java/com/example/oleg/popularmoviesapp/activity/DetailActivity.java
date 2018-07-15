@@ -308,7 +308,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         switch (id) {
             case ID_DETAIL_MOVIE_LOADER:
                 boolean cursorHasValidData = false;
-                Log.i(TAG, "testik" + data.getCount());
                 if (data != null && data.moveToFirst()) {
                     /* We have valid data, continue on to bind the data to the UI */
                     cursorHasValidData = true;

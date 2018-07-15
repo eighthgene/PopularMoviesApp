@@ -99,7 +99,6 @@ public final class NetworkUtils {
         return url;
     }
 
-    //TODO
     public static Uri buildVideYoutubeUrl(String key){
         Uri builtUri = Uri.parse(YOUTUBE_VIDEO_URL + key);
         return builtUri;

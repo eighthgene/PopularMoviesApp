@@ -196,7 +196,7 @@
                             android:id="@+id/tv_detail_overview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/default_movie_overview" />
+                            tools:text="@string/default_movie_overview" />
 
                     </LinearLayout>
                 </android.support.v7.widget.CardView>

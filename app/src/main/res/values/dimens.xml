@@ -9,4 +9,9 @@
     <dimen name="label_movie_overview">36sp</dimen>
     <dimen name="ic_favorite_elevation">6dp</dimen>
     <dimen name="msg_no_connection">16sp</dimen>
+    <dimen name="iv_width_favorite_empty_image_view">100dp</dimen>
+    <dimen name="iv_height_favorite_empty_image_view">100dp</dimen>
+    <dimen name="iv_width_main_connection_image_view">100dp</dimen>
+    <dimen name="iv_height_main_connection_image_view">100dp</dimen>
+    <dimen name="video_detail_title_size">12sp</dimen>
 </resources>
